@@ -1,0 +1,17 @@
+# .coveragerc
+
+[run]
+source = .
+omit = 
+    test\*
+    __init__.py
+    env_variables.py
+    main.py
+    src\api\*
+    src\database\protocols\*
+    src\database\db_handler.py   
+branch = True
+
+[report]
+show_missing = True
+fail_under = 80    
