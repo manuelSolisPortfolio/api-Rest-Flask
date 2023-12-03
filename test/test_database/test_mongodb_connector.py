@@ -25,7 +25,7 @@ class TestMongoConnector(TestCase):
             collection="mycollection",
         )
     
-    @patch("test.test_database.test_connector.MongoConnector._create_client")
+    @patch("test.test_database.test_mongodb_connector.MongoConnector._create_client")
     def setUp(self, mock_client) -> None:
         """Set up the mongo connector."""
         mock_client.return_value = MongoClient()
@@ -48,7 +48,7 @@ class TestMongoConnector(TestCase):
         collection = self.mongo_connector._create_collection(database)
         self.assertIsInstance(collection, Collection)
 
-    @patch("test.test_database.test_connector.MongoConnector._create_client")
+    @patch("test.test_database.test_mongodb_connector.MongoConnector._create_client")
     def test_connect(self, mock_client):
         """Test if the connection was successful."""
         mock_client.return_value = MongoClient()
