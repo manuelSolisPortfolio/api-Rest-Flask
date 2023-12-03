@@ -67,7 +67,7 @@ class MongoConnector:
         logs.info("Creating a collection.")
         return database[self.collection]
 
-    def connect(self) -> Collection:
+    def connect(self) -> MongoClient:
         """
         Connect with MongoDB.
         return:
@@ -76,7 +76,8 @@ class MongoConnector:
         logs.info("Connecting with MongoDB.")
         client = self._create_client()
         database = self._create_database(client)
-        return self._create_collection(database)
+        self._create_collection(database)
+        return client
 
 mongo_connector_instance = MongoConnector(
     driver=EnvVariables.DB_DRIVER,

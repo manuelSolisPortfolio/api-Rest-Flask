@@ -52,8 +52,8 @@ class TestMongoConnector(TestCase):
     def test_connect(self, mock_client):
         """Test if the connection was successful."""
         mock_client.return_value = MongoClient()
-        collection = self.mongo_connector.connect()
-        self.assertIsInstance(collection, Collection)
+        client = self.mongo_connector.connect()
+        self.assertIsInstance(client, MongoClient)
 
     def test_get_mongo_connector(self) -> MongoConnector:
         """Return the mongo connector."""
