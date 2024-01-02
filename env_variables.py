@@ -1,10 +1,16 @@
+"""This module contains the environment variables of the application."""
+
 import os
 
 from dotenv import load_dotenv
 
 load_dotenv(".env")
 
-class EnvVariables: 
+
+class EnvVariables:
+
+    """The environment variables of the application."""
+
     DB_USER = os.environ.get("DB_USER")
     DB_PASSWORD = os.environ.get("DB_PASSWORD")
     DB_NAME = os.environ.get("DB_NAME")

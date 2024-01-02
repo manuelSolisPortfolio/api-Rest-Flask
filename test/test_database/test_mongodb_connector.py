@@ -8,7 +8,6 @@ from mongomock.database import Database
 from mongomock.collection import Collection
 
 from src.database.mongodb.mongo_connector import MongoConnector
-from src.database.mongodb.mongo_connector import get_mongo_connector
 
 
 class TestMongoConnector(TestCase):
@@ -24,13 +23,12 @@ class TestMongoConnector(TestCase):
             database="mydatabase",
             collection="mycollection",
         )
-    
+
     @patch("test.test_database.test_mongodb_connector.MongoConnector._create_client")
     def setUp(self, mock_client) -> None:
         """Set up the mongo connector."""
         mock_client.return_value = MongoClient()
         self.client = self.mongo_connector._create_client()
-       
 
     def test_create_client(self):
         """Test if the client was created."""
@@ -41,7 +39,6 @@ class TestMongoConnector(TestCase):
         database = self.mongo_connector._create_database(self.client)
         self.assertIsInstance(database, Database)
 
-    
     def test_create_collection(self):
         """Test if the collection was created."""
         database = self.mongo_connector._create_database(self.client)
@@ -54,8 +51,3 @@ class TestMongoConnector(TestCase):
         mock_client.return_value = MongoClient()
         client = self.mongo_connector.connect()
         self.assertIsInstance(client, MongoClient)
-
-    def test_get_mongo_connector(self) -> MongoConnector:
-        """Return the mongo connector."""
-        mongo_connector = get_mongo_connector()
-        self.assertIsInstance(mongo_connector, MongoConnector)

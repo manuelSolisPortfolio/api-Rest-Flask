@@ -12,7 +12,7 @@ logs = logging.getLogger(__name__)
 
 class MongoConnector:
     """Class responsible for creating a connection with MongoDB."""
-    
+
     def __init__(
         self,
         driver: str,
@@ -23,7 +23,7 @@ class MongoConnector:
     ) -> None:
         """
         Initialize the class with the necessary attributes.
-        
+
         params:
             driver (str): Driver to connect with MongoDB.
             host (str): Host to connect with MongoDB.
@@ -49,12 +49,12 @@ class MongoConnector:
                client: MongoClient object.
             return:
                 MongoDatabase object.
-                   
+
         """
         logs.info("Creating a database.")
         return client[self.database]
 
-    def _create_collection(self, database: Database) -> Collection :
+    def _create_collection(self, database: Database) -> Collection:
         """
         Create a collection to connect with MongoDB.
 
@@ -78,19 +78,3 @@ class MongoConnector:
         database = self._create_database(client)
         self._create_collection(database)
         return client
-
-mongo_connector_instance = MongoConnector(
-    driver=EnvVariables.DB_DRIVER,
-    host=EnvVariables.DB_HOST,
-    port=EnvVariables.DB_PORT,
-    database=EnvVariables.DB_NAME,
-    collection=EnvVariables.DB_COLLECTION,
-)
-
-def get_mongo_connector() -> MongoConnector:
-    """
-    Return the mongo connector instance.
-    return:
-        MongoConnector object.
-    """
-    return mongo_connector_instance

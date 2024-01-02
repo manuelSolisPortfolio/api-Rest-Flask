@@ -5,7 +5,6 @@ from unittest.mock import Mock
 
 from src.database.db_connector_protocol import DbConnectorProtocol
 from src.database.handler import DatabaseHandler
-from src.database.handler import get_db_handler
 
 
 class TestDatabaseHandler(TestCase):
@@ -56,8 +55,3 @@ class TestDatabaseHandler(TestCase):
         """
         self.db_handler.connect()
         self.db_connector_mock.connect.assert_called_once()
-
-    def test_get_db_handler(self):
-        """Test if the get_db_handler function returns a DatabaseHandler instance."""
-        db_handler = get_db_handler()
-        self.assertIsInstance(db_handler, DatabaseHandler)

@@ -1,0 +1,27 @@
+name: CI build
+run-name: ${{ github.actor }} is executing CI. 🚀
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: Run security checks
+        run: |
+          ./security.sh
+      - name: Run tests
+        run: |
+          ./tests.sh
+      - name: Snyk scan
+        uses: snyk/actions/python@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        

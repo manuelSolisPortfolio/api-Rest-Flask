@@ -13,9 +13,14 @@ I am happy you are here reviewing this project! 😄.
 - Docker Compose
 - Kubernetes
 - Python
+- Bandit
+- Safety
+- SonarQube
+- Jenkins
+- Snyk
 
 ## Purpose
-This API was created to be used in my portfolio.
+This API was created to be used as portfolio.
 
 ## Development Methodology
 - Test-Driven Development (TDD) is followed for development.

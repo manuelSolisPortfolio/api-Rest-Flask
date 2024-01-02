@@ -7,7 +7,6 @@ omit =
     __init__.py
     env_variables.py
     main.py
-    src\api\* 
 branch = True
 
 [report]

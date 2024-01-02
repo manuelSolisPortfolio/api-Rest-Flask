@@ -3,7 +3,6 @@
 import logging
 
 from src.database.db_connector_protocol import DbConnectorProtocol
-from src.database.mongodb.mongo_connector import get_mongo_connector
 
 logs = logging.getLogger(__name__)
 DatabaseClient=object
@@ -56,11 +55,3 @@ class DatabaseHandler:
         """Connect to the database."""
         logs.info("Connecting to the database.")
         return self.connector.connect()
-
-
-db_handler = DatabaseHandler(connector=get_mongo_connector())
-
-
-def get_db_handler() -> DatabaseHandler:
-    """Return the database handler."""
-    return db_handler

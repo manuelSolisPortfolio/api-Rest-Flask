@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-flask-manumarpred
+spec:
+  selector:
+    matchLabels:
+      app: backend-flask-manumarpred
+  template:
+    metadata:
+      labels:
+        app: backend-flask-manumarpred
+    spec:
+      containers:
+      - name: backend-flask-manumarpred
+        image: <Image>
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: <Port>

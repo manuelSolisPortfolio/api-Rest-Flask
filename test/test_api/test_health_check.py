@@ -9,10 +9,8 @@ Response:
 """
 from unittest import TestCase
 
-from flask import Flask
-from flask_restful import Api
-
 from src.api.health_check.routes import Health
+from test.test_api.helpers import create_server_app_client
 
 
 class TestHealthCheck(TestCase):
@@ -23,11 +21,7 @@ class TestHealthCheck(TestCase):
         """
         Set up the test class.
         """
-        app = Flask(__name__)
-        app.config["TESTING"] = True
-        api = Api(app)
-        api.add_resource(Health, "/health")
-        cls.client = app.test_client()
+        cls.client = create_server_app_client(Health, "/health")
 
     def test_health_check(self):
         """
