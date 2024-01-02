@@ -16,9 +16,11 @@ jobs:
           pip install -r requirements.txt
       - name: Run security checks
         run: |
+          chmod +x security.sh
           ./security.sh
       - name: Run tests
         run: |
+          chmod +x tests.sh
           ./tests.sh
       - name: Snyk scan
         uses: snyk/actions/python@master
