@@ -8,20 +8,33 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    services:
+      sonarqube:
+        image: sonarqube:latest
+        ports:
+          - 9000:9000
+        
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-      - name: Run security checks
-        run: |
-          chmod +x security.sh
-          ./security.sh
+      
+      - name: Run flake8
+        run: flake8
+
       - name: Run tests and coverage
         run: |
           chmod +x tests.sh
           ./tests.sh
+  
+      - name: Run security checks
+        run: |
+          chmod +x security.sh
+          ./security.sh
+
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/python@master
         continue-on-error: true # To make sure that SARIF upload gets called
@@ -33,4 +46,12 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: snyk.sarif
-        
+
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        with:
+          sonar-token-generator: true
+          sonar-host-url: http://sonarqube:9000
+          sonar-project-key: myproject
+          sonar-language: python
+          sonar-sources: ${{ github.workspace }}
