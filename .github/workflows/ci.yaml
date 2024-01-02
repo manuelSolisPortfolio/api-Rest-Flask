@@ -47,11 +47,14 @@ jobs:
         with:
           sarif_file: snyk.sarif
 
+      - name: Generate SonarQube Token
+        run: echo "::set-env name=SONAR_TOKEN::$(curl -u ${{ secrets.SONARQUBE_USER }}:${{ secrets.SONARQUBE_PASSWORD }} -X POST 'http://sonarqube:9000/api/user_tokens/generate?name=github-actions-token' | jq -r .token)"
+
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
         with:
-          sonar-token-generator: true
-          sonar-host-url: http://sonarqube:9000
+          SONAR-TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: http://sonarqube:9000
           sonar-project-key: myproject
           sonar-language: python
           sonar-sources: ${{ github.workspace }}
