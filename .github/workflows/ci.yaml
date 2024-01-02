@@ -1,4 +1,4 @@
-name: CI build
+name: CI pipeline
 run-name: ${{ github.actor }} is executing CI. 🚀
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
         run: |
           chmod +x security.sh
           ./security.sh
-      - name: Run tests
+      - name: Run tests and coverage
         run: |
           chmod +x tests.sh
           ./tests.sh
