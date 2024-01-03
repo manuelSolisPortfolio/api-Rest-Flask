@@ -47,12 +47,11 @@ jobs:
         with:
           sarif_file: snyk.sarif
 
-      - name: Wait for SonarQube to start
-        run: sleep 60s
-
       - name: Initialize SonarQube
         id: sonarqube_token
         run: |
+          chmod +x wait-for-it.shwget -O wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
+          chmod +x wait-for-it.sh
           wait-for-it.sh sonarqube:9000 -t 0 -- echo "SonarQube is up!"
           SONAR_TOKEN=$(curl -u ${{ secrets.SONARQUBE_USER }}:${{ secrets.SONARQUBE_PASSWORD }} -X POST "http://sonarqube:9000/api/authentication/login" | jq -r .token)
           curl -u ${{ secrets.SONARQUBE_USER }}:${{ secrets.SONARQUBE_PASSWORD }} -X POST "http://sonarqube:9000/api/projects/create?name=my_project_name&project=my_project_key"
