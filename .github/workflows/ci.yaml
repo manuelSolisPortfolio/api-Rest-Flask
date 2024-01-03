@@ -48,7 +48,7 @@ jobs:
           sarif_file: snyk.sarif
 
       - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@v4
+        uses: sonarsource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ steps.sonarqube-scan.outputs.token }}
           SONAR_HOST_URL: http://sonarqube:9000
