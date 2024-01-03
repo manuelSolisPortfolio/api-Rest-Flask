@@ -47,12 +47,20 @@ jobs:
         with:
           sarif_file: snyk.sarif
 
-      - name: Generate SonarQube Token
+      - name: Wait for SonarQube to start
+        run: sleep 60s
+
+      - name: Initialize SonarQube
         id: sonarqube_token
-        run: echo "SONAR_TOKEN=$(curl -u ${{ secrets.SONARQUBE_USER }}:${{ secrets.SONARQUBE_PASSWORD }} -X POST 'http://sonarqube:9000/api/user_tokens/generate?name=github-actions-token' | jq -r .token)" >> $GITHUB_ENV
+        run: |
+          wait-for-it.sh sonarqube:9000 -t 0 -- echo "SonarQube is up!"
+          SONAR_TOKEN=$(curl -u ${{ secrets.SONARQUBE_USER }}:${{ secrets.SONARQUBE_PASSWORD }} -X POST "http://sonarqube:9000/api/authentication/login" | jq -r .token)
+          curl -u ${{ secrets.SONARQUBE_USER }}:${{ secrets.SONARQUBE_PASSWORD }} -X POST "http://sonarqube:9000/api/projects/create?name=my_project_name&project=my_project_key"
+          SONAR_PROJECT_TOKEN=$(curl -u ${{ secrets.SONARQUBE_USER }}:${{ secrets.SONARQUBE_PASSWORD }} -X POST "http://sonarqube:9000/api/user_tokens/generate?name=my_project_key" | jq -r .token)
+          echo "SONAR_PROJECT_TOKEN=$SONAR_PROJECT_TOKEN" >> $GITHUB_ENV
 
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
         env: 
-          SONAR_TOKEN: $SONAR_TOKEN
+          SONAR_TOKEN: ${{ env.SONAR_PROJECT_TOKEN }}
           SONAR_HOST_URL: http://sonarqube:9000
