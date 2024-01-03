@@ -27,12 +27,12 @@ jobs:
 
       - name: Run tests and coverage
         run: |
-          chmod +x tests.sh
+          chmod +x ./tests.sh
           ./tests.sh
   
       - name: Safety and Bandit
         run: |
-          chmod +x security.sh
+          chmod +x ./security.sh
           ./security.sh
 
       - name: Snyk 
@@ -47,22 +47,8 @@ jobs:
         with:
           sarif_file: snyk.sarif
 
-      - name: Wait for SonarQube to start
-        run: |
-          while ! curl -f http://sonarqube:9000/sessions/new >/dev/null; do
-            echo "Waiting for SonarQube..."
-            sleep 5
-          done
-
-      - name: Initialize SonarQube
-        id: sonarqube_token
-        run: |
-          curl -u ${{ secrets.SONARQUBE_USER }}:${{ secrets.SONARQUBE_PASSWORD }} -X POST "http://sonarqube:9000/api/projects/create?name=my_project_name&project=my_project_key"
-          SONAR_TOKEN=$(curl -u ${{ secrets.SONARQUBE_USER }}:${{ secrets.SONARQUBE_PASSWORD }} -X POST "http://sonarqube:9000/api/user_tokens/generate?name=my_project_key" | grep -oP '"token"\s*:\s*"\K[^"]+')
-          echo $SONAR_TOKEN
-
       - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@master
-        env: 
-          SONAR_TOKEN: $SONAR_TOKEN
+        uses: sonarsource/sonarqube-scan-action@v4
+        env:
+          SONAR_TOKEN: ${{ steps.sonarqube-scan.outputs.token }}
           SONAR_HOST_URL: http://sonarqube:9000
