@@ -37,7 +37,7 @@ jobs:
 
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/python@master
-        continue-on-error: true # To make sure that SARIF upload gets called
+        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
@@ -50,7 +50,7 @@ jobs:
       - name: Initialize SonarQube
         id: sonarqube_token
         run: |
-          chmod +x wait-for-it.shwget -O wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
+          wget -O wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
           chmod +x wait-for-it.sh
           wait-for-it.sh sonarqube:9000 -t 0 -- echo "SonarQube is up!"
           SONAR_TOKEN=$(curl -u ${{ secrets.SONARQUBE_USER }}:${{ secrets.SONARQUBE_PASSWORD }} -X POST "http://sonarqube:9000/api/authentication/login" | jq -r .token)
