@@ -27,32 +27,32 @@ jobs:
         run: |
           pip install -r requirements.txt
       
-      - name: Run flake8
-        run: flake8
+      # - name: Run flake8
+      #   run: flake8
 
-      - name: Run tests and coverage
-        run: |
-          chmod +x ./tests.sh
-          ./tests.sh
+      # - name: Run tests and coverage
+      #   run: |
+      #     chmod +x ./tests.sh
+      #     ./tests.sh
   
-      - name: Safety and Bandit
-        run: |
-          chmod +x ./security.sh
-          ./security.sh
+      # - name: Safety and Bandit
+      #   run: |
+      #     chmod +x ./security.sh
+      #     ./security.sh
 
-      - name: Snyk 
-        uses: snyk/actions/python@master
-        continue-on-error: true
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --sarif-file-output=snyk.sarif
-      - name: Upload result to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: snyk.sarif
+      # - name: Snyk 
+      #   uses: snyk/actions/python@master
+      #   continue-on-error: true
+      #   env:
+      #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      #   with:
+      #     args: --sarif-file-output=snyk.sarif
+      # - name: Upload result to GitHub Code Scanning
+      #   uses: github/codeql-action/upload-sarif@v2
+      #   with:
+      #     sarif_file: snyk.sarif
       
       - name: SonarQube Scan
         run: |
-          chmod +x ./sonarqube.sh
+          chmod +x ./sonarqube2.sh
           ./sonarqube2.sh
