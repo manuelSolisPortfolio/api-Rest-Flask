@@ -55,4 +55,4 @@ jobs:
       - name: SonarQube Scan
         run: |
           chmod +x ./sonarqube.sh
-          ./sonarqube.sh
+          ./sonarqube2.sh
