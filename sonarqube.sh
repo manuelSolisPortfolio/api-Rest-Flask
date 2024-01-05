@@ -6,10 +6,10 @@ SONAR_PROJECT_KEY="my-project-key"
 SONAR_TOKEN="my-token"
 
 # Check if SonarQube is running
-if ! curl -s -o /dev/null -w "%{http_code}" "${SONAR_HOST_URL}"; then
-  echo "SonarQube is not running"
-  exit 1
-fi
+while ! curl -s -o /dev/null -w "%{http_code}" "${SONAR_HOST_URL}"; do
+  echo "Waiting for SonarQube to start..."
+  sleep 1
+done
 
 # Create a project
 curl -X POST "${SONAR_HOST_URL}/api/projects" -H "Content-Type: application/json" -d '{
