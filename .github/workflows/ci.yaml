@@ -74,8 +74,10 @@ jobs:
       #     export PATH="$PATH:$(pwd)/sonar-scanner-cli-4.6.2.2472-linux/bin"
       #     chmod +x $(pwd)/sonar-scanner-cli-4.6.2.2472-linux/bin/sonar-scanner
       - name: SonarQube Token
-        run: SONAR_TOKEN=$(curl -u admin:admin -X POST "http://localhost:9000/api/user_tokens/generate?name=my_project_key" | grep -oP '"token"\s*:\s*"\K[^"]+')
-      
+        run: |
+          response=$(curl -u admin:admin -X POST "http://localhost:9000/api/user_tokens/generate?name=my_project_key")
+          SONAR_TOKEN=$(echo $response | grep -oP '"token"\s*:\s*"\K[^"]+' || echo "Failed to retrieve token from response: $response")
+          
       - name: SonarQube
         uses: sonarsource/sonarqube-scan-action@master
         env:
