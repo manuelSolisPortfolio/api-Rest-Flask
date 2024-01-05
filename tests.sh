@@ -4,6 +4,7 @@
 # command: ./tests.sh
 
 # Run tests
+set -e
 echo -e "Running tests... \n"
 coverage run -m unittest discover -v
 echo -e "\n\n"
