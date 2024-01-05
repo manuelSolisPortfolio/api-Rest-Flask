@@ -77,6 +77,7 @@ jobs:
         run: |
           response=$(curl -u admin:admin -X POST "http://localhost:9000/api/user_tokens/generate?name=my_project_key")
           echo "SONAR_TOKEN=$(echo $response | grep -oP '\"token\"\s*:\s*\"\K[^\"]+' || echo "Failed to retrieve token from response: $response")" >> $GITHUB_ENV
+          echo $SONAR_TOKEN
 
       - name: SonarQube
         uses: sonarsource/sonarqube-scan-action@master
