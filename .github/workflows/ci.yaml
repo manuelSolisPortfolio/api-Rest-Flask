@@ -85,15 +85,15 @@ jobs:
           SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
           SONAR_HOST_URL: http://localhost:9000
           SONAR_SCANNER_OPTS: -Dsonar.projectKey=my_project_key
-      # - name: Run sonar-scanner
-      #   run: |
-      #     docker run \
-      #       --rm \
-      #       -e SONAR_HOST_URL="http://localhost:9000" \
-      #       -e SONAR_SCANNER_OPTS="-Dsonar.projectKey=my_project_key" \
-      #       -e SONAR_LOGIN=$SONAR_PROJECT_TOKEN \
-      #       -v "$(pwd):/usr/src" \
-      #       sonarsource/sonar-scanner-cli
+      - name: Run sonar-scanner
+        run: |
+          docker run \
+            --rm \
+            -e SONAR_HOST_URL="http://localhost:9000" \
+            -e SONAR_SCANNER_OPTS="-Dsonar.projectKey=my_project_key" \
+            -e SONAR_LOGIN=${{ env.SONAR_TOKEN }} \
+            -v "$(pwd):/usr/src" \
+            sonarsource/sonar-scanner-cli
       # - name: SonarQube Scan
       #   run: |
       #     SONAR_PROJECT_TOKEN=$(curl -u admin:admin -X POST "http://localhost:9000/api/user_tokens/generate?name=my_project_key" | grep -oP '"token"\s*:\s*"\K[^"]+')
