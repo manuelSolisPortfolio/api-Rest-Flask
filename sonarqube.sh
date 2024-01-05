@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define environment variables
-SONAR_HOST_URL="http://sonarqube:9000"
+SONAR_HOST_URL="http://localhost:9000"
 SONAR_PROJECT_KEY="my-project-key"
 SONAR_TOKEN="my-token"
 
