@@ -54,9 +54,7 @@ jobs:
       
       - name: SonarQube Scan
         run: |
-          curl -X POST -u "admin:admin" "http://localhost:9000/api/projects/create" \
-            -d "name=my-project" \
-            -d "organization=my-organization"
+          curl -u admin:admin -X POST "http://localhost:9000/api/projects/create?name=my_project_name&project=my_project_key"
 
       - name: Install sonar-scanner
         run: |
