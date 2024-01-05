@@ -66,7 +66,14 @@ jobs:
       #       -e SONAR_LOGIN=$SONAR_PROJECT_TOKEN \
       #       -v "$(pwd):/usr/src" \
       #       sonarsource/sonar-scanner-cli
-      
+      - name: Install sonar-scanner
+        run: |
+          sudo apt-get install -y unzip
+          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+          unzip sonar-scanner-cli-4.6.2.2472-linux.zip
+          export PATH="$PATH:$(pwd)/sonar-scanner-cli-4.6.2.2472-linux/bin"
+          chmod +x sonar-scanner-cli-4.6.2.2472-linux/bin/sonar-scanner
+ 
       - name: SonarQube Scan
         run: |
           sonar-scanner
