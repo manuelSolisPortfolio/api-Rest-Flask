@@ -54,5 +54,24 @@ jobs:
       
       - name: SonarQube Scan
         run: |
-          chmod +x ./sonarqube2.sh
-          ./sonarqube2.sh
+          curl -X POST -u "admin:admin" "http://localhost:9000/api/projects/create" \
+            -d "name=my-project" \
+            -d "organization=my-organization"
+
+      - name: Install sonar-scanner
+        run: |
+          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.31229.zip
+          unzip sonar-scanner-cli-4.8.0.31229.zip
+          sudo mv sonar-scanner-4.8.0.31229 /opt/sonar-scanner
+          export PATH=$PATH:/opt/sonar-scanner/bin
+      
+      - name: Run sonar-scanner
+        run: |
+          sonar-scanner \
+            -Dsonar.projectKey=my-project \
+            -Dsonar.organization=my-organization \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=http://localhost:9000 \
+            -Dsonar.login=admin \
+            -Dsonar.password=admin \
+
