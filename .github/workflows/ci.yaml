@@ -72,7 +72,7 @@ jobs:
           wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
           unzip sonar-scanner-cli-4.6.2.2472-linux.zip
           export PATH="$PATH:$(pwd)/sonar-scanner-cli-4.6.2.2472-linux/bin"
-          chmod +x sonar-scanner-cli-4.6.2.2472-linux/bin/sonar-scanner
+          chmod +x $(pwd)/sonar-scanner-cli-4.6.2.2472-linux/bin/sonar-scanner
  
       - name: SonarQube Scan
         run: |
