@@ -27,8 +27,6 @@ jobs:
 
       - name: Run tests and coverage
         run: |
-          pwd
-          ls -a
           chmod +x ./tests.sh
           ./tests.sh
   
