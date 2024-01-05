@@ -46,9 +46,8 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: snyk.sarif
-
+      
       - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@master
-        env:
-          SONAR_TOKEN: ${{ steps.sonarqube-scan.outputs.token }}
-          SONAR_HOST_URL: http://sonarqube:9000
+        run: |
+          chmod +x ./sonarqube.sh
+          ./sonarqube.sh
