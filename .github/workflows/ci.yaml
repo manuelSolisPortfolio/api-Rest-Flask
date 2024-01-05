@@ -87,6 +87,7 @@ jobs:
       #     SONAR_SCANNER_OPTS: -Dsonar.projectKey=my_project_key
       - name: Run sonar-scanner
         run: |
+          docker pull sonarsource/sonar-scanner-cli
           docker run \
             --rm \
             -e SONAR_HOST_URL="http://localhost:9000" \
