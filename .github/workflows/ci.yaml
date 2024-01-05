@@ -25,80 +25,42 @@ jobs:
         uses: actions/checkout@v4
       - name: Install dependencies
         run: |
+          set -e
           pip install -r requirements.txt
       
-      # - name: Run flake8
-      #   run: flake8
+      - name: Run flake8
+        run: |
+          set -e
+          flake8
 
-      # - name: Run tests and coverage
-      #   run: |
-      #     chmod +x ./tests.sh
-      #     ./tests.sh
+      - name: Run tests and coverage
+        run: |
+          set -e
+          chmod +x ./tests.sh
+          ./tests.sh
   
-      # - name: Safety and Bandit
-      #   run: |
-      #     chmod +x ./security.sh
-      #     ./security.sh
-
-      # - name: Snyk 
-      #   uses: snyk/actions/python@master
-      #   continue-on-error: true
-      #   env:
-      #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      #   with:
-      #     args: --sarif-file-output=snyk.sarif
-      # - name: Upload result to GitHub Code Scanning
-      #   uses: github/codeql-action/upload-sarif@v2
-      #   with:
-      #     sarif_file: snyk.sarif
-      
-      # - name: SonarQube Scan
-      #   run: |
-      #     curl -u admin:admin -X POST "http://localhost:9000/api/projects/create?name=my_project_name&project=my_project_key"
-      #     SONAR_PROJECT_TOKEN=$(curl -u admin:admin -X POST "http://localhost:9000/api/user_tokens/generate?name=my_project_key" | grep -oP '"token"\s*:\s*"\K[^"]+')
-      
-      # - name: Run sonar-scanner
-      #   run: |
-      #     docker run \
-      #       --rm \
-      #       -e SONAR_HOST_URL="http://localhost:9000" \
-      #       -e SONAR_SCANNER_OPTS="-Dsonar.projectKey=my_project_key" \
-      #       -e SONAR_LOGIN=$SONAR_PROJECT_TOKEN \
-      #       -v "$(pwd):/usr/src" \
-      #       sonarsource/sonar-scanner-cli
-      # - name: Install sonar-scanner
-      #   run: |
-      #     sudo apt-get install -y unzip
-      #     wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-      #     unzip sonar-scanner-cli-4.6.2.2472-linux.zip
-      #     export PATH="$PATH:$(pwd)/sonar-scanner-cli-4.6.2.2472-linux/bin"
-      #     chmod +x $(pwd)/sonar-scanner-cli-4.6.2.2472-linux/bin/sonar-scanner
-      - name: SonarQube Token
+      - name: Safety and Bandit
         run: |
-          response=$(curl -u admin:admin -X POST "http://localhost:9000/api/user_tokens/generate?name=my_project_key")
-          echo "SONAR_TOKEN=$(echo $response | grep -oP '\"token\"\s*:\s*\"\K[^\"]+' || echo "Failed to retrieve token from response: $response")" >> $GITHUB_ENV
-          echo $SONAR_TOKEN
+          set -e
+          chmod +x ./security.sh
+          ./security.sh
 
-      # - name: SonarQube
-      #   uses: sonarsource/sonarqube-scan-action@master
-      #   env:
-      #     SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
-      #     SONAR_HOST_URL: http://localhost:9000
-      #     SONAR_SCANNER_OPTS: -Dsonar.projectKey=my_project_key
-      - name: Run sonar-scanner
+      - name: Snyk 
+        uses: snyk/actions/python@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --sarif-file-output=snyk.sarif
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: snyk.sarif
+      
+      - name: build docker compose
         run: |
-          docker pull sonarsource/sonar-scanner-cli
-          docker run \
-            --rm \
-            -e SONAR_HOST_URL="http://localhost:9000" \
-            -e SONAR_SCANNER_OPTS="-Dsonar.projectKey=my_project_key" \
-            -e SONAR_LOGIN=${{ env.SONAR_TOKEN }} \
-            -v "$(pwd):/usr/src" \
-            sonarsource/sonar-scanner-cli
-      # - name: SonarQube Scan
-      #   run: |
-      #     SONAR_PROJECT_TOKEN=$(curl -u admin:admin -X POST "http://localhost:9000/api/user_tokens/generate?name=my_project_key" | grep -oP '"token"\s*:\s*"\K[^"]+')
-      #   env:
-      #     SONAR_HOST_URL: http://localhost:9000
-      #     SONAR_LOGIN: $SONAR_PROJECT_TOKEN
-
+          set -e
+          docker-compose -f docker-compose.yml build up
+        
+       
+      
