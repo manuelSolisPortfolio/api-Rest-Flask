@@ -52,17 +52,25 @@ jobs:
       #   with:
       #     sarif_file: snyk.sarif
       
+      # - name: SonarQube Scan
+      #   run: |
+      #     curl -u admin:admin -X POST "http://localhost:9000/api/projects/create?name=my_project_name&project=my_project_key"
+      #     SONAR_PROJECT_TOKEN=$(curl -u admin:admin -X POST "http://localhost:9000/api/user_tokens/generate?name=my_project_key" | grep -oP '"token"\s*:\s*"\K[^"]+')
+      
+      # - name: Run sonar-scanner
+      #   run: |
+      #     docker run \
+      #       --rm \
+      #       -e SONAR_HOST_URL="http://localhost:9000" \
+      #       -e SONAR_SCANNER_OPTS="-Dsonar.projectKey=my_project_key" \
+      #       -e SONAR_LOGIN=$SONAR_PROJECT_TOKEN \
+      #       -v "$(pwd):/usr/src" \
+      #       sonarsource/sonar-scanner-cli
+      
       - name: SonarQube Scan
         run: |
-          curl -u admin:admin -X POST "http://localhost:9000/api/projects/create?name=my_project_name&project=my_project_key"
+          sonar-scanner
           SONAR_PROJECT_TOKEN=$(curl -u admin:admin -X POST "http://localhost:9000/api/user_tokens/generate?name=my_project_key" | grep -oP '"token"\s*:\s*"\K[^"]+')
-      
-      - name: Run sonar-scanner
-        run: |
-          docker run \
-            --rm \
-            -e SONAR_HOST_URL="http://localhost:9000" \
-            -e SONAR_SCANNER_OPTS="-Dsonar.projectKey=my_project_key" \
-            -e SONAR_LOGIN=$SONAR_PROJECT_TOKEN \
-            -v "$(pwd):/usr/src" \
-            sonarsource/sonar-scanner-cli
+        env:
+          SONAR_HOST_URL: http://localhost:9000
+          SONAR_LOGIN: $SONAR_PROJECT_TOKEN
