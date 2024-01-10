@@ -45,11 +45,14 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: snyk.sarif
-      
+
+      - name: SonarQube Scan
+        run: |
+          set -e
+          chmod +x ./sonar_scanner.sh
+          ./sonarqube.sh
+
       - name: build docker compose
         run: |
           set -e
           docker-compose -f docker-compose.yaml build
-        
-       
-      

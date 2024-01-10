@@ -21,7 +21,7 @@ class Response:
 
         return jsonify({"status": "ok", "data": data}), 200
 
-    def ok_response_201(self, data: dict) -> dict:
+    def ok_response_201(self, data: dict) -> tuple:
         return jsonify(
             {"status": "ok", "data": data}
         ), 201
