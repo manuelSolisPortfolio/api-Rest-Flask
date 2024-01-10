@@ -51,6 +51,23 @@ docker exec -it sonarscan sh -c 'pwd && \
     -Dsonar.password=admin \
     -Dsonar.projectKey=my-project'
 
+# Wait for SonarQube analysis to complete
+echo "Waiting for SonarQube analysis to complete..."
+while ! curl -s -f -u admin:admin "http://localhost:9000/api/qualitygates/project_status?projectKey=my-project" | grep -q '"status":"OK"'; do
+    sleep 1
+done
 # Showing scanner results
-echo "Showing issues..."
+echo -e "Showing project analyses... \n"
+curl -u admin:admin http://localhost:9000/api/project_analyses/search?project=my-project
+echo -e "\n"
+echo -e "\n Showing duplications... \n"
+curl -u admin:admin http://localhost:9000/api/duplications/show?key=my-project
+echo -e "\n"
+echo -e "\n Showing issues... \n"
 curl -u admin:admin http://localhost:9000/api/issues/search?componentKeys=my-project
+echo -e "\n"
+echo -e "\n Showing hotspots... \n"
+curl -u admin:admin http://localhost:9000/api/hotspots/search?project=my-project
+echo -e "\n"
+echo -e "\n Showing measurements... \n"
+curl -u admin:admin "http://localhost:9000/api/measures/component_tree?component=my-project&metricKeys=ncloc,complexity,violations,security_rating,bugs,vulnerabilities,code_smells,coverage"
