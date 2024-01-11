@@ -4,6 +4,7 @@
 # command: ./security.sh
 
 # Run code security tests
+set -e
 echo -e "Scanning for vulnerabilities... \n"
 bandit -r ./src/
 echo -e "\n\n"

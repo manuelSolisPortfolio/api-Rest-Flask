@@ -18,6 +18,8 @@ I am happy you are here reviewing this project! 😄.
 - SonarQube
 - Jenkins
 - Snyk
+- Github Actions
+- CodeQL
 
 ## Purpose
 This API was created to be used as portfolio.
